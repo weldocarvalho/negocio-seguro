@@ -8,7 +8,7 @@
 		"dbgenerate": "npx prisma generate",
 		"migrations": "npx prisma migrate dev",
 		"build": "npx tsc --build tsconfig.json",
-		"start": "ts-node-dev --respawn --transpile-only ./src/web/app.ts"
+		"start": "ts-node-dev --respawn --transpile-only ./src/app/index.ts"
 	},
 	"keywords": [],
 	"author": "",
