@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
-import { signupController } from '../controllers/signup.controller'
-import { userController } from '../controllers/user.controller'
+import { signupRoutes } from './signup.router'
+import { userRoutes } from './user.router'
 
 const router = Router()
 
@@ -9,11 +9,7 @@ router.get('/', (req: Request, res: Response) => {
 	res.send('alive')
 })
 
-// user
-router.post('/user', userController.create)
-router.get('/user', userController.find)
-
-// signup
-router.post('/signup', signupController.handle)
+userRoutes(router)
+signupRoutes(router)
 
 export { router }
