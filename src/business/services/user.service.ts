@@ -4,9 +4,9 @@ const create = async (payload: any) => {
 	let user = await findOne(payload.id)
 
 	if (!user) {
-		const { name, email } = payload
+		const { name, email, password } = payload
 		user = await prisma.users.create({
-			data: { name, email },
+			data: { name, email, password },
 		})
 	}
 
