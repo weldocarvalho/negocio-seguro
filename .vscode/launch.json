@@ -5,11 +5,11 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "pwa-chrome",
+			"type": "node",
 			"request": "launch",
-			"name": "Chrome",
-			"url": "http://localhost:5555",
-			"webRoot": "${workspaceFolder}"
+			"name": "Node",
+			"program": "${workspaceFolder}/src/web/app.ts",
+			"outFiles": ["${workspaceFolder}/dist/**/*.js"]
 		}
 	]
 }
