@@ -1,17 +1,24 @@
-import { Request, Response } from 'express'
 import { createUser } from '../../business/services/user.service'
+import { IController } from '../protocols/controller.protocol'
+import { IHttpRequest, IHttpResponse } from '../protocols/http.protocol'
 
-export const signupController = {
-	handle: async (req: Request, res: Response) => {
+export const signupController: IController = {
+	handle: async (req: IHttpRequest): Promise<IHttpResponse> => {
 		const requiredFields = ['name', 'email', 'password']
 
 		for (const field of requiredFields) {
 			if (!req.body[field]) {
-				return res.status(400).send(`Missing param error: ${field}`)
+				return {
+					statusCode: 400,
+					body: `Missing param error: ${field}`,
+				}
 			}
 		}
 
 		const newUser = await createUser(req.body)
-		return res.status(201).json({ newUser })
+		return {
+			statusCode: 201,
+			body: newUser,
+		}
 	},
 }
