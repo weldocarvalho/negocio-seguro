@@ -6,6 +6,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
-		"outDir": "/dist"
+		"sourceMap": true,
+		"allowJs": true,
+		"rootDir": "./src",
+		"outDir": "./dist"
 	}
 }
