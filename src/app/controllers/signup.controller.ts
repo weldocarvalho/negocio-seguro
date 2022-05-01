@@ -15,11 +15,11 @@ export const signupController: IController = {
 				statusCode: 201,
 				body: newUser,
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error)
 			return {
-				statusCode: 400,
-				body: error,
+				statusCode: error.statusCode,
+				body: error.message,
 			}
 		}
 	},
