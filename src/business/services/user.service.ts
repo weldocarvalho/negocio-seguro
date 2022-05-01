@@ -1,6 +1,7 @@
 import prisma from '../../db'
 import { IAccountModel } from '../../business/protocols/account.protocol'
 import { ISignupAccountModel } from '../../app/protocols/signupAccount.protocol'
+import { hashPassword } from '../../utils/encrypter'
 
 const createUser = async (userData: ISignupAccountModel): Promise<IAccountModel> => {
 	const { name, email, password } = userData
@@ -13,7 +14,7 @@ const createUser = async (userData: ISignupAccountModel): Promise<IAccountModel>
 
 	// TODO: password must not return !
 	return await prisma.users.create({
-		data: { name, email, password },
+		data: { name, email, password: hashPassword(password) },
 	})
 }
 
