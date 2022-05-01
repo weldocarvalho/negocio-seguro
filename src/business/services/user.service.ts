@@ -1,17 +1,20 @@
 import prisma from '../../db'
+import { IAccountModel } from '../../business/protocols/account.protocol'
+import { ISignupAccountModel } from '../../app/protocols/signupAccount.protocol'
 
-const createUser = async (payload: any) => {
-	let user = await findOne(payload.email)
+const createUser = async (userData: ISignupAccountModel): Promise<IAccountModel> => {
+	const { name, email, password } = userData
+	const user = await findOne(email)
 
-	// TODO: refactor to "user already exists"
-	if (!user) {
-		const { name, email, password } = payload
-		user = await prisma.users.create({
-			data: { name, email, password },
-		})
+	// TODO: refactor 'cause it's returning an empty object (everything all right on console tough)
+	if (user) {
+		throw new Error('User already exists')
 	}
 
-	return user
+	// TODO: password must not return !
+	return await prisma.users.create({
+		data: { name, email, password },
+	})
 }
 
 const findOne = async (email: string) => {
