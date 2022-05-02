@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import setupMiddlewares from './middlewares'
 import { router } from './routes'
 dotenv.config()
 
@@ -8,6 +9,5 @@ app.listen(process.env.APP_PORT, () => {
 	console.log(`SERVER IS RUNNING AT http://localhost:${process.env.APP_PORT}`)
 })
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+setupMiddlewares(app)
 app.use(router)

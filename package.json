@@ -8,7 +8,7 @@
 		"dbgenerate": "npx prisma generate",
 		"migrations": "npx prisma migrate dev",
 		"build": "npx tsc --build tsconfig.json",
-		"start": "ts-node-dev --respawn --transpile-only ./src/web/app.ts"
+		"start": "ts-node-dev --respawn --transpile-only ./src/app/index.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@types/express": "^4.17.13",
 		"@types/node": "^17.0.25",
+		"@types/validator": "^13.7.2",
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.20.0",
 		"eslint": "^8.14.0",
@@ -35,7 +36,8 @@
 		"@prisma/client": "^3.12.0",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.3",
-		"prisma": "^3.12.0"
+		"prisma": "^3.12.0",
+		"validator": "^13.7.0"
 	},
 	"prisma": {
 		"schema": "./src/db/prisma/schema.prisma"
