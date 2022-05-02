@@ -1,6 +1,6 @@
 import prisma from '../../db'
 
-const create = async (payload: any) => {
+const createUser = async (payload: any) => {
 	let user = await findOne(payload.id)
 
 	if (!user) {
@@ -19,4 +19,4 @@ const findOne = async (userId: any) => {
 	})
 }
 
-export { findOne, create }
+export { findOne, createUser }
