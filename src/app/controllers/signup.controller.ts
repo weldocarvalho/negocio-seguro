@@ -1,34 +1,26 @@
+import { signupService } from '../../business/services/signup.service'
 import { createUser } from '../../business/services/user.service'
-import { emailValidator } from '../../utils/validator'
 import { IController } from '../protocols/controller.protocol'
 import { IHttpRequest, IHttpResponse } from '../protocols/http.protocol'
 
 export const signupController: IController = {
 	handle: async (req: IHttpRequest): Promise<IHttpResponse> => {
-		const requiredFields = ['name', 'email', 'password']
-		const errors: string[] = []
+		const { name, email, password } = req.body
 
-		for (const field of requiredFields) {
-			if (!req.body[field]) {
-				errors.push(`Missing param error: ${field}`)
-			}
-		}
+		try {
+			const userData = signupService(name, email, password)
+			const newUser = await createUser(userData)
 
-		if (!emailValidator(req.body.email)) {
-			errors.push('Invalid email')
-		}
-
-		if (errors.length > 0) {
 			return {
-				statusCode: 400,
-				body: errors,
+				statusCode: 201,
+				body: newUser,
 			}
-		}
-
-		const newUser = await createUser(req.body)
-		return {
-			statusCode: 201,
-			body: newUser,
+		} catch (error: any) {
+			console.error(error)
+			return {
+				statusCode: error.statusCode,
+				body: error.message,
+			}
 		}
 	},
 }
