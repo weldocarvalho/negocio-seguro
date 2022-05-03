@@ -12,7 +12,10 @@ const signupService = (name: string, email: string, password: string) => {
 		}
 	}
 
-	if (!emailValidator(email)) {
+	try {
+		emailValidator(email)
+	} catch (error) {
+		console.error(error)
 		errors.push(INVALID_EMAIL)
 	}
 
