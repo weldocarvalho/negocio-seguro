@@ -1,5 +1,6 @@
 import { compareSync } from 'bcryptjs'
 import { INVALID_EMAIL, PASSWORD_DOES_NOT_MATCH } from '../../app/errors/errorTypes'
+import { generateTokenJWT } from '../../utils/tokenJWT'
 import { emailValidator } from '../../utils/validator'
 import { findOne } from './user.service'
 
@@ -22,7 +23,7 @@ const signinService = async (email: string, password: string) => {
 			}
 		}
 
-		return user
+		return { token: generateTokenJWT(user.id, user.email) }
 	} catch (error: any) {
 		console.error(error)
 		throw {

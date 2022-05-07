@@ -23,10 +23,10 @@ export const singinController: IController = {
 
 		const { email, password } = req.body
 		try {
-			const user = await signinService(email, password)
+			const token = await signinService(email, password)
 			return {
 				statusCode: 200,
-				body: user,
+				body: token,
 			}
 		} catch (error: any) {
 			console.error(error)
