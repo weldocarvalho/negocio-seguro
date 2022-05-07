@@ -20,7 +20,6 @@ const signupService = (name: string, email: string, password: string) => {
 	}
 
 	if (errors.length > 0) {
-		// eslint-disable-next-line no-throw-literal
 		throw {
 			statusCode: 400,
 			message: errors,
