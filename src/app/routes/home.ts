@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { expressMiddlewareAdapter } from '../config/expressMiddleware.adapter'
+import { expressMiddlewareAdapter } from '../adapters/expressMiddleware.adapter'
 import { authMiddleware } from '../middlewares/auth.middleware'
 
 export const homeRoutes = (router: Router): void => {
