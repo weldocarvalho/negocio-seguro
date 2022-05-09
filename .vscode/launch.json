@@ -7,9 +7,18 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Node",
+			"name": "Node_launch",
+			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}/src/app/index.ts",
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"]
+		},
+		{
+			"name": "Launch via npm",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run-script", "start-dev"]
 		}
 	]
 }
