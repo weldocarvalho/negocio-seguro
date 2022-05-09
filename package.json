@@ -8,7 +8,8 @@
 		"dbgenerate": "npx prisma generate",
 		"migrations": "npx prisma migrate dev",
 		"build": "npx tsc --build tsconfig.json",
-		"start": "ts-node-dev --respawn --transpile-only ./src/app/index.ts"
+		"start-dev": "cross-env NODE_ENV=DEVELOPMENT ts-node-dev --respawn --transpile-only ./src/app/index.ts",
+		"start-prod": "cross-env NODE_ENV=PRODUCTION ts-node-dev --respawn --transpile-only ./src/app/index.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -39,6 +40,7 @@
 		"@prisma/client": "^3.12.0",
 		"bcryptjs": "^2.4.3",
 		"cors": "^2.8.5",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.3",
 		"jsonwebtoken": "^8.5.1",
