@@ -9,10 +9,12 @@ const allowedDomains = [
 
 export default cors({
 	origin: function (origin, callback) {
-		if (origin !== undefined && allowedDomains.indexOf(origin) !== -1) {
-			callback(null, true)
+		if (process.env.NODE_ENV === 'DEVELOPMENT') {
+			return callback(null, true)
 		} else {
-			callback(new Error('NOT_ALLOWED_BY_CORS'))
+			origin !== undefined && allowedDomains.indexOf(origin) !== -1
+				? callback(null, true)
+				: callback(new Error('NOT_ALLOWED_BY_CORS'))
 		}
 	},
 })
