@@ -13,7 +13,7 @@ const signinService = async (email: string, password: string) => {
 	}
 
 	try {
-		const user = await findUserByEmail(email)
+		const user = await findOne(email)
 		const hashPassword = user.password
 
 		if (!passwordConfirmation(password, hashPassword)) {
@@ -26,15 +26,8 @@ const signinService = async (email: string, password: string) => {
 		return { token: generateTokenJWT(user.id, user.email) }
 	} catch (error: any) {
 		console.error(error)
-		throw {
-			statusCode: error.statusCode,
-			message: error.message,
-		}
+		throw error
 	}
-}
-
-const findUserByEmail = async (email: string) => {
-	return await findOne(email)
 }
 
 const passwordConfirmation = (password: string, hashPassword: string) => {
