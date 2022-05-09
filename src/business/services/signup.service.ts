@@ -1,22 +1,17 @@
-import { INVALID_EMAIL, MISSING_PARAM } from '../../app/errors/errorTypes'
-import { emailValidator } from '../../utils/validator'
+import { INVALID_EMAIL, INVALID_MOBILE_PHONE } from '../../app/errors/errorTypes'
+import { emailValidator, mobilePhoneValidator } from '../../utils/validator'
+import { createUser } from './user.service'
 
-const signupService = (name: string, email: string, password: string) => {
-	const requiredFields = [name, email, password]
+const signupService = async (email: string, password: string, phone: string) => {
 	const errors: string[] = []
 
-	// TODO: refactor to return the field value (it's returning Missing param errror: undefined)
-	for (const field of requiredFields) {
-		if (!field) {
-			errors.push(`${MISSING_PARAM}${field}`)
-		}
+	if (!emailValidator(email)) {
+		errors.push(INVALID_EMAIL)
 	}
 
-	try {
-		emailValidator(email)
-	} catch (error) {
-		console.error(error)
-		errors.push(INVALID_EMAIL)
+	// TODO: improve phone number validation (add locales)
+	if (!mobilePhoneValidator(phone)) {
+		errors.push(INVALID_MOBILE_PHONE)
 	}
 
 	if (errors.length > 0) {
@@ -26,7 +21,21 @@ const signupService = (name: string, email: string, password: string) => {
 		}
 	}
 
-	return { name, email, password }
+	const [name] = email.split('@')
+
+	const userCredentials = {
+		name,
+		email,
+		password,
+		phone,
+	}
+
+	try {
+		await createUser(userCredentials)
+	} catch (error: any) {
+		console.error(error)
+		throw error
+	}
 }
 
 export { signupService }
