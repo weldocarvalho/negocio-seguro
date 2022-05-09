@@ -12,6 +12,7 @@ model Users {
   email   String   @unique
   name    String
   password String
+  phone Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
