@@ -25,7 +25,7 @@ export const signupController: IController = {
 		const { email, password } = req.body
 
 		try {
-			const token = await signupService(email, password)
+			const { token } = await signupService(email, password)
 
 			return {
 				statusCode: 201,
