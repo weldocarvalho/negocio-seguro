@@ -1,5 +1,6 @@
 import { USER_ALREADY_EXISTS } from '../app/errors/errorTypes'
 import { ISignupAccountModel } from '../app/protocols/signupAccount.protocol'
+import { IUpdateAccountModelType } from '../business/protocols/account.protocol'
 import prisma from '../db'
 
 const create = async ({ name, email, hashedPassword }: ISignupAccountModel) => {
@@ -23,4 +24,11 @@ const create = async ({ name, email, hashedPassword }: ISignupAccountModel) => {
 	})
 }
 
-export { create }
+const update = async (email: string, userData: IUpdateAccountModelType) => {
+	await prisma.users.update({
+		where: { email },
+		data: userData,
+	})
+}
+
+export { create, update }

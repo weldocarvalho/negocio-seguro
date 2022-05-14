@@ -2,9 +2,10 @@ import { compareSync } from 'bcryptjs'
 import { INVALID_EMAIL, PASSWORD_DOES_NOT_MATCH } from '../../app/errors/errorTypes'
 import { generateTokenJWT } from '../../utils/tokenJWT'
 import { emailValidator } from '../../utils/validator'
+import { twoFactorAuthService } from './twoFactorAuth/twoFactorAuth.service'
 import { findOne } from './user.service'
 
-const signinService = async (email: string, password: string) => {
+const signinService = async (email: string, password: string, isFromSignup = false) => {
 	if (!emailValidator(email)) {
 		throw {
 			statusCode: 400,
@@ -23,7 +24,14 @@ const signinService = async (email: string, password: string) => {
 			}
 		}
 
-		return { token: generateTokenJWT(user.id, user.email) }
+		const token = generateTokenJWT(user.id, user.email)
+
+		if (!isFromSignup) {
+			await twoFactorAuthService(email)
+			return { token, codeReceiptConfirmation: true }
+		}
+
+		return { token }
 	} catch (error: any) {
 		console.error(error)
 		throw error
