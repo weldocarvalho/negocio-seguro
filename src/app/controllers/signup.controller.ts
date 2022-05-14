@@ -5,7 +5,7 @@ import { IHttpRequest, IHttpResponse } from '../protocols/http.protocol'
 
 export const signupController: IController = {
 	handle: async (req: IHttpRequest): Promise<IHttpResponse> => {
-		const requiredFields = ['email', 'password', 'phone']
+		const requiredFields = ['email', 'password']
 		const errors: string[] = []
 
 		// TODO: add empty string validation
@@ -22,14 +22,14 @@ export const signupController: IController = {
 			}
 		}
 
-		const { email, password, phone } = req.body
+		const { email, password } = req.body
 
 		try {
-			await signupService(email, password, phone)
+			const token = await signupService(email, password)
 
 			return {
 				statusCode: 201,
-				body: 'New user created',
+				body: { email, token },
 			}
 		} catch (error: any) {
 			console.error(error)
