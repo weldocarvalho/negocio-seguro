@@ -3,5 +3,5 @@ import { expressRouteAdapter } from '../adapters/expressRoute.adapter'
 import { singinController } from '../controllers/signin.controller'
 
 export const signinRoutes = (router: Router): void => {
-	router.post('/auth', expressRouteAdapter(singinController))
+	router.post('/signin', expressRouteAdapter(singinController))
 }
