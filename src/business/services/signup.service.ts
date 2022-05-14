@@ -22,7 +22,7 @@ const signupService = async (email: string, password: string) => {
 	const hashedPassword = hashPassword(password)
 
 	try {
-		await createUser({ name, email, hashedPassword })
+		await createUser(name, email, hashedPassword)
 		return await signinService(email, password, true)
 	} catch (error: any) {
 		console.error(error)

@@ -1,26 +1,14 @@
 import prisma from '../../db'
-import { ISignupAccountModel } from '../../app/protocols/signupAccount.protocol'
-import { USER_ALREADY_EXISTS, USER_NOT_FOUND } from '../../app/errors/errorTypes'
+import { USER_NOT_FOUND } from '../../app/errors/errorTypes'
+import { create } from '../../repo/account.repository'
 
-const createUser = async ({ name, email, hashedPassword }: ISignupAccountModel) => {
-	const user = await prisma.users.findFirst({
-		where: { email },
-	})
-
-	if (user) {
-		throw {
-			statusCode: 422,
-			message: USER_ALREADY_EXISTS,
-		}
+const createUser = async (name: string, email: string, hashedPassword: string) => {
+	try {
+		await create({ name, email, hashedPassword })
+	} catch (error) {
+		console.error(error)
+		throw error
 	}
-
-	await prisma.users.create({
-		data: {
-			name,
-			email,
-			password: hashedPassword,
-		},
-	})
 }
 
 const findOne = async (email: string) => {
