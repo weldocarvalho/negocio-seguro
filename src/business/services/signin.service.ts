@@ -3,7 +3,7 @@ import { INVALID_EMAIL, PASSWORD_DOES_NOT_MATCH } from '../../app/errors/errorTy
 import { generateTokenJWT } from '../../utils/tokenJWT'
 import { emailValidator } from '../../utils/validator'
 import { twoFactorAuthService } from './twoFactorAuth/twoFactorAuth.service'
-import { findOne } from './user.service'
+import { findAccount } from './account.service'
 
 const signinService = async (email: string, password: string, isFromSignup = false) => {
 	if (!emailValidator(email)) {
@@ -14,8 +14,8 @@ const signinService = async (email: string, password: string, isFromSignup = fal
 	}
 
 	try {
-		const user = await findOne(email)
-		const hashPassword = user.password
+		const account = await findAccount(email)
+		const hashPassword = account.password
 
 		if (!passwordConfirmation(password, hashPassword)) {
 			throw {
@@ -24,7 +24,7 @@ const signinService = async (email: string, password: string, isFromSignup = fal
 			}
 		}
 
-		const token = generateTokenJWT(user.id, user.email)
+		const token = generateTokenJWT(account.id, account.email)
 
 		if (!isFromSignup) {
 			await twoFactorAuthService(email)

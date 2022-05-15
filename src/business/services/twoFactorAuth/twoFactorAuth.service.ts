@@ -1,22 +1,21 @@
 import { twoFAgenerateCode } from './twoFAgenerateCode.service'
-import { findOne } from '../user.service'
+import { findAccount } from '../account.service'
 
 export const twoFactorAuthService = async (email: string, mobileNumber = null) => {
 	try {
-		// pedido de envio do código/token para o celular
 		if (mobileNumber) {
 			await twoFAgenerateCode(mobileNumber)
 		} else {
-			const { phone } = await findOne(email)
+			const { mobilePhone } = await findAccount(email)
 
-			if (!phone) {
+			if (!mobilePhone) {
 				throw {
 					statusCode: 422,
 					message: 'MOBILE_NUMBER_NOT_FOUND',
 				}
 			}
 
-			await twoFAgenerateCode(phone)
+			await twoFAgenerateCode(mobilePhone)
 		}
 	} catch (error) {
 		console.error(error)

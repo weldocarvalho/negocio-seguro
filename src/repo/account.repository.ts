@@ -1,21 +1,21 @@
 import { USER_ALREADY_EXISTS } from '../app/errors/errorTypes'
-import { ISignupAccountModel } from '../app/protocols/signupAccount.protocol'
-import { IUpdateAccountModelType } from '../business/protocols/account.protocol'
+import { ISignupAccount } from '../app/protocols/signupAccount.protocol'
+import { IUpdateAccount } from '../business/protocols/account.protocol'
 import prisma from '../db'
 
-const create = async ({ name, email, hashedPassword }: ISignupAccountModel) => {
-	const user = await prisma.users.findFirst({
+const create = async ({ name, email, hashedPassword }: ISignupAccount) => {
+	const account = await prisma.account.findFirst({
 		where: { email },
 	})
 
-	if (user) {
+	if (account) {
 		throw {
 			statusCode: 422,
 			message: USER_ALREADY_EXISTS,
 		}
 	}
 
-	await prisma.users.create({
+	await prisma.account.create({
 		data: {
 			name,
 			email,
@@ -24,8 +24,8 @@ const create = async ({ name, email, hashedPassword }: ISignupAccountModel) => {
 	})
 }
 
-const update = async (email: string, userData: IUpdateAccountModelType) => {
-	await prisma.users.update({
+const update = async (email: string, userData: IUpdateAccount) => {
+	await prisma.account.update({
 		where: { email },
 		data: userData,
 	})

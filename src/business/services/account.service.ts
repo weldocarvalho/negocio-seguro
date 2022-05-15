@@ -1,9 +1,9 @@
 import prisma from '../../db'
 import { USER_NOT_FOUND } from '../../app/errors/errorTypes'
 import { create, update } from '../../repo/account.repository'
-import { IUpdateAccountModelType } from '../protocols/account.protocol'
+import { IUpdateAccount } from '../protocols/account.protocol'
 
-const createUser = async (name: string, email: string, hashedPassword: string) => {
+const createAccount = async (name: string, email: string, hashedPassword: string) => {
 	try {
 		await create({ name, email, hashedPassword })
 	} catch (error) {
@@ -12,8 +12,9 @@ const createUser = async (name: string, email: string, hashedPassword: string) =
 	}
 }
 
-const findOne = async (email: string) => {
-	const user = await prisma.users.findFirst({
+// TODO: move to account.repository
+const findAccount = async (email: string) => {
+	const user = await prisma.account.findFirst({
 		where: { email },
 	})
 
@@ -27,8 +28,8 @@ const findOne = async (email: string) => {
 	return user
 }
 
-const updateUser = async (email: string, userData: IUpdateAccountModelType) => {
+const updateAccount = async (email: string, userData: IUpdateAccount) => {
 	update(email, userData)
 }
 
-export { findOne, createUser, updateUser }
+export { findAccount, createAccount, updateAccount }

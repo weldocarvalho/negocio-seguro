@@ -1,5 +1,5 @@
 import { twoFactorAuthService } from '../../business/services/twoFactorAuth/twoFactorAuth.service'
-import { updateUser } from '../../business/services/user.service'
+import { updateAccount } from '../../business/services/account.service'
 import { emailValidator, mobilePhoneValidator } from '../../utils/validator'
 import { INVALID_EMAIL, INVALID_MOBILE_PHONE, MISSING_PARAM } from '../errors/errorTypes'
 import { IController } from '../protocols/controller.protocol'
@@ -7,8 +7,8 @@ import { IHttpRequest, IHttpResponse } from '../protocols/http.protocol'
 
 export const twoFactorAuthController: IController = {
 	handle: async (req: IHttpRequest): Promise<IHttpResponse> => {
-		const { email, mobileNumber } = req.body
-		const requiredFields = ['email', 'mobileNumber']
+		const { email, mobilePhone } = req.body
+		const requiredFields = ['email', 'mobilePhone']
 		const errors: string[] = []
 
 		// TODO: refactor this part
@@ -31,7 +31,7 @@ export const twoFactorAuthController: IController = {
 		}
 
 		// TODO: improve phone number validation (add locales and more)
-		if (!mobilePhoneValidator(mobileNumber)) {
+		if (!mobilePhoneValidator(mobilePhone)) {
 			errors.push(INVALID_MOBILE_PHONE)
 		}
 
@@ -42,12 +42,10 @@ export const twoFactorAuthController: IController = {
 			}
 		}
 
-		await updateUser(email, {
-			phone: mobileNumber,
-		})
+		await updateAccount(email, { mobilePhone })
 
 		try {
-			await twoFactorAuthService(email, mobileNumber)
+			await twoFactorAuthService(email, mobilePhone)
 			return {
 				statusCode: 200,
 				body: { codeReceiptConfirmation: true },

@@ -1,6 +1,6 @@
-export interface ISignupAccountModel {
+export interface ISignupAccount {
 	name: string
 	email: string
 	hashedPassword: string
-	phone?: string
+	mobilePhone?: string
 }

@@ -1,13 +1,14 @@
-export interface IAccountModel {
+export interface IAccount {
 	id: number
 	name: string
 	email: string
 	password: string
+	mobilePhone?: string
 }
 
-export interface IUpdateAccountModelType {
+export interface IUpdateAccount {
 	name?: string
 	email?: string
 	password?: string
-	phone?: string
+	mobilePhone?: string
 }
