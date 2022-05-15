@@ -23,10 +23,17 @@ export const singinController: IController = {
 
 		const { email, password } = req.body
 		try {
-			const token = await signinService(email, password)
+			const { token, codeReceiptConfirmation } = await signinService(
+				email,
+				password
+			)
+
 			return {
 				statusCode: 200,
-				body: token,
+				body: {
+					token,
+					codeReceiptConfirmation,
+				},
 			}
 		} catch (error: any) {
 			console.error(error)

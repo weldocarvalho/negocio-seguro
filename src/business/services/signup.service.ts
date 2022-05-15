@@ -1,21 +1,13 @@
-import { INVALID_EMAIL, MISSING_PARAM } from '../../app/errors/errorTypes'
+import { INVALID_EMAIL } from '../../app/errors/errorTypes'
+import { hashPassword } from '../../utils/encrypter'
 import { emailValidator } from '../../utils/validator'
+import { signinService } from './signin.service'
+import { createAccount } from './account.service'
 
-const signupService = (name: string, email: string, password: string) => {
-	const requiredFields = [name, email, password]
+const signupService = async (email: string, password: string) => {
 	const errors: string[] = []
 
-	// TODO: refactor to return the field value (it's returning Missing param errror: undefined)
-	for (const field of requiredFields) {
-		if (!field) {
-			errors.push(`${MISSING_PARAM}${field}`)
-		}
-	}
-
-	try {
-		emailValidator(email)
-	} catch (error) {
-		console.error(error)
+	if (!emailValidator(email)) {
 		errors.push(INVALID_EMAIL)
 	}
 
@@ -26,7 +18,16 @@ const signupService = (name: string, email: string, password: string) => {
 		}
 	}
 
-	return { name, email, password }
+	const [name] = email.split('@')
+	const hashedPassword = hashPassword(password)
+
+	try {
+		await createAccount(name, email, hashedPassword)
+		return await signinService(email, password, true)
+	} catch (error: any) {
+		console.error(error)
+		throw error
+	}
 }
 
 export { signupService }
