@@ -4,12 +4,7 @@ import { create, update } from '../../repo/account.repository'
 import { IUpdateAccount } from '../protocols/account.protocol'
 
 const createAccount = async (name: string, email: string, hashedPassword: string) => {
-	try {
-		await create({ name, email, hashedPassword })
-	} catch (error) {
-		console.error(error)
-		throw error
-	}
+	await create({ name, email, hashedPassword })
 }
 
 // TODO: move to account.repository
@@ -29,7 +24,7 @@ const findAccount = async (email: string) => {
 }
 
 const updateAccount = async (email: string, userData: IUpdateAccount) => {
-	update(email, userData)
+	await update(email, userData)
 }
 
 export { findAccount, createAccount, updateAccount }
