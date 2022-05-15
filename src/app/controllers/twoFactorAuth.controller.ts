@@ -42,9 +42,8 @@ export const twoFactorAuthController: IController = {
 			}
 		}
 
-		await updateAccount(email, { mobilePhone })
-
 		try {
+			await updateAccount(email, { mobilePhone })
 			await twoFactorAuthService(email, mobilePhone)
 			return {
 				statusCode: 200,

@@ -25,10 +25,29 @@ const create = async ({ name, email, hashedPassword }: ISignupAccount) => {
 }
 
 const update = async (email: string, userData: IUpdateAccount) => {
-	await prisma.account.update({
+	const account = await prisma.account.findFirst({
 		where: { email },
-		data: userData,
 	})
+
+	if (account === null) {
+		throw {
+			statusCode: 422,
+			message: 'ACCOUNT_NOT_FOUND',
+		}
+	}
+
+	try {
+		await prisma.account.update({
+			where: { email },
+			data: userData,
+		})
+	} catch (error) {
+		console.error(error)
+		throw {
+			statusCode: 500,
+			message: 'INTERNAL_SERVER_ERROR',
+		}
+	}
 }
 
 export { create, update }
